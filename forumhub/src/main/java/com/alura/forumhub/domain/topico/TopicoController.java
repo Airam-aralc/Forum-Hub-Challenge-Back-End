@@ -42,4 +42,40 @@ public class TopicoController {
 
         return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
     }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dados){
+        var optionalTopico = repository.findById(id);
+
+        //Verifica se o tópico existe
+        if (optionalTopico.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        //não permite duplicação de título e mensagem
+        if (repository.existsByTituloAndMensagem(dados.titulo(), dados.mensagem())){
+            return ResponseEntity.badRequest().body("Erro: Já existe um tópico com este titulo e mensagem");
+        }
+
+        var topico = optionalTopico.get();
+        topico.atualizarInformacoes(dados);
+
+        return ResponseEntity.ok(new DadosDetalhamentoTopico(topico));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id){
+        var optionalTopico = repository.findById(id);
+
+        //verifica se o tópico existe no bancp
+        if (optionalTopico.isPresent()){
+            repository.deleteById(id);
+            return ResponseEntity.noContent().build(); //retorna status 204
+        }
+
+        //se não existir, retorna status 404
+        return ResponseEntity.notFound().build();
+    }
 }
