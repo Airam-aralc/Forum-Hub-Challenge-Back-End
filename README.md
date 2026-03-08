@@ -34,5 +34,5 @@ O **FórumHub** é uma API REST robusta desenvolvida para simular o funcionament
 
 **⭐⭐BADGE ORACLE⭐⭐**
 <p align="center">
-
+<img width="500" height="500" alt="Badge-Spring" src="https://github.com/user-attachments/assets/894541fb-7114-4d65-82da-e23359b43013" />
 </p>
